@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { coatById, EYES, type CoatId, type EyeId } from '../game/coat';
+import { canvasTexture, litMaterial } from './materials';
 
 /**
  * 纯代码的 3D 小猫（黏土 / 盲盒公仔风）。全部由球体、圆锥、管子拼成，
@@ -20,10 +21,8 @@ export interface CatRig {
 }
 
 
-function clay(color: string | THREE.Texture, rough = 0.75): THREE.MeshStandardMaterial {
-  return color instanceof THREE.Texture
-    ? new THREE.MeshStandardMaterial({ map: color, roughness: rough, metalness: 0 })
-    : new THREE.MeshStandardMaterial({ color, roughness: rough, metalness: 0 });
+function clay(color: string | THREE.Texture, rough = 0.75): THREE.Material {
+  return color instanceof THREE.Texture ? litMaterial({ map: color, roughness: rough }) : litMaterial({ color, roughness: rough });
 }
 
 function sphere(r: number, mat: THREE.Material, seg = 32): THREE.Mesh {
@@ -95,8 +94,7 @@ function coatTexture(coat: CoatId, part: Part, makeCanvas: (w: number, h: number
       g.fillStyle = r; g.fillRect(0, 0, W, H);
     }
   }
-  const tex = new THREE.CanvasTexture(cv as any);
-  tex.colorSpace = THREE.SRGBColorSpace;
+  const tex = canvasTexture(cv);
   tex.anisotropy = 4;
   return tex;
 }

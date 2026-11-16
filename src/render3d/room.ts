@@ -1,9 +1,10 @@
 import * as THREE from 'three';
+import { litMaterial } from './materials';
 
 /** 等距视角的温馨小房间：木地板 + 两面墙 + 窗户 + 地毯 + 猫窝 + 绿植 + 饭碗。全部代码生成。 */
 export function buildRoom(): THREE.Group {
   const g = new THREE.Group();
-  const mat = (color: string, rough = 0.85) => new THREE.MeshStandardMaterial({ color, roughness: rough });
+  const mat = (color: string, rough = 0.85) => litMaterial({ color, roughness: rough });
   const box = (w: number, h: number, d: number, m: THREE.Material, x = 0, y = 0, z = 0) => {
     const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
     b.position.set(x, y, z); b.castShadow = true; b.receiveShadow = true; g.add(b); return b;
